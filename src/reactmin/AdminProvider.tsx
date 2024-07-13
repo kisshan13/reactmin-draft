@@ -2,7 +2,13 @@ import React, { useEffect, useMemo } from "react";
 import { getResourceProps } from "./utils/utils";
 import RouteMin from "./router/Router";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
-import type { ActminDataProvider } from "./types/types";
+import type {
+  ActminDataProvider,
+  ResourceProps,
+  ResourceType,
+} from "./types/types";
+import { QueryClient, QueryClientProvider } from "react-query";
+import queryClient from "./QueryProvider";
 
 function AdminProvider<T extends string>({
   children,
@@ -12,7 +18,7 @@ function AdminProvider<T extends string>({
   dataProvider: ActminDataProvider<T>;
 }) {
   const config = useMemo(() => {
-    return getResourceProps({ children });
+    return getResourceProps<ResourceType<ResourceProps>[]>({ children });
   }, [children]);
 
   if (!config) {
@@ -25,13 +31,13 @@ function AdminProvider<T extends string>({
     }
   }, [dataProvider]);
 
-  console.log(config);
-
   return (
     <>
-      <ThemeProvider defaultTheme="dark">
-        <RouteMin props={config} />
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider defaultTheme="dark">
+          <RouteMin props={config} />
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
   );
 }

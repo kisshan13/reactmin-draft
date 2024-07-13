@@ -19,3 +19,8 @@ export interface ActminDataProvider<T extends string> {
   title: string;
   navIconMapper: IconMapper;
 }
+
+export interface DataFieldResource {
+  name: string;
+  field: string;
+}

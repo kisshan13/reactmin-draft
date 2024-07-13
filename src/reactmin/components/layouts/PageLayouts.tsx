@@ -27,14 +27,16 @@ import {
 } from "../../ui/card";
 import { Tabs, TabsContent } from "../../ui/tabs";
 import { Badge } from "../../ui/badge";
+import DataFrame from "../data/DataFrame";
+import DataField from "../data/DataField";
 
-function PageLayout() {
+function PageLayout({ name }: { name: string }) {
   return (
     <Tabs defaultValue="all">
       <TabsContent value="all">
         <Card x-chunk="dashboard-06-chunk-0">
           <CardHeader>
-            <CardTitle>Products</CardTitle>
+            <CardTitle className=" capitalize">{name}</CardTitle>
             <CardDescription>
               Manage your products and view their sales performance.
             </CardDescription>
@@ -177,7 +179,7 @@ function PageLayout() {
                           variant="ghost"
                         >
                           <MoreHorizontal className="h-4 w-4" />
-                          
+
                           <span className="sr-only">Toggle menu</span>
                         </Button>
                       </DropdownMenuTrigger>
@@ -316,6 +318,15 @@ function PageLayout() {
                 </TableRow>
               </TableBody>
             </Table>
+
+            <br />
+
+            <DataFrame name="user">
+              <DataField field="user.hello" name="S No." />
+              <DataField field="user.hello" name="Username" />
+              <DataField field="user.hello" name="Status" />
+              <DataField field="user.hello" name="Addresss" />
+            </DataFrame>
           </CardContent>
           <CardFooter>
             <div className="text-xs text-muted-foreground">

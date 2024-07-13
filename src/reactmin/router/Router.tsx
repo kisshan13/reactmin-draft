@@ -6,6 +6,7 @@ import {
 } from "../types/types";
 
 import { lazy, Suspense } from "react";
+import PageLayout from "../components/layouts/PageLayouts";
 
 const Layout = lazy(() => import("../components/layouts/Layout"));
 
@@ -23,7 +24,7 @@ export default function RouteMin({
               <Route
                 path={prop.props.name}
                 key={prop.props.name}
-                element={<></>}
+                element={<PageLayout name={prop.props.name}></PageLayout>}
               />
             ))}
           </Route>
