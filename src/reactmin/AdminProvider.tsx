@@ -9,13 +9,16 @@ import type {
 } from "./types/types";
 import { QueryClient, QueryClientProvider } from "react-query";
 import queryClient from "./QueryProvider";
+import { ReactminProvider } from "./contexts/ReactminContext";
 
 function AdminProvider<T extends string>({
   children,
   dataProvider,
+  queryClient,
 }: {
   children: React.ReactNode[] | React.ReactNode;
   dataProvider: ActminDataProvider<T>;
+  queryClient: QueryClient;
 }) {
   const config = useMemo(() => {
     return getResourceProps<ResourceType<ResourceProps>[]>({ children });
@@ -33,11 +36,11 @@ function AdminProvider<T extends string>({
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
+      <ReactminProvider>
         <ThemeProvider defaultTheme="dark">
-          <RouteMin props={config} />
+          <RouteMin props={config} queryClient={queryClient} />
         </ThemeProvider>
-      </QueryClientProvider>
+      </ReactminProvider>
     </>
   );
 }

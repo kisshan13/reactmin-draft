@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 import {
   Table,
@@ -107,4 +107,4 @@ function DataFrame({
   );
 }
 
-export default DataFrame;
+export default memo(DataFrame);

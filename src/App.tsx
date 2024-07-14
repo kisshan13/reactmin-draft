@@ -6,6 +6,7 @@ import dataProvider from "./reactmin/utils/dataprovider";
 import { UserIcon } from "lucide-react";
 import DataFrame from "./reactmin/components/data/DataFrame";
 import DataField from "./reactmin/components/data/DataField";
+import UserDataFrame from "./components/resources/UserDataFrame";
 
 interface AppComponent extends React.HTMLAttributes<HTMLDivElement> {
   source: string;
@@ -23,10 +24,10 @@ function App() {
   return (
     <>
       <AdminProvider dataProvider={provider}>
-        <Resource name="user" view="TABLE" />
-        <Resource name="dod" view="TABLE" />
-        <Resource name="user" view="TABLE" />
-        <Resource name="user" view="TABLE" />
+        <Resource name="user" view="TABLE" dataFrame={<UserDataFrame />} />
+        {/* <Resource name="dod" view="TABLE" /> */}
+        {/* <Resource name="user" view="TABLE" /> */}
+        {/* <Resource name="user" view="TABLE" /> */}
       </AdminProvider>
     </>
   );

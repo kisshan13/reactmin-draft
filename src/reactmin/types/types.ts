@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ViewMode = "TABLE" | "GRID" | "CARD";
 
 export type ResourceType<T> = {
@@ -10,6 +12,7 @@ export interface ResourceAttributes
 export interface ResourceProps {
   name: string;
   view: string;
+  dataFrame: React.ReactNode;
 }
 
 export type IconMapper = Record<string, React.ReactNode>;
