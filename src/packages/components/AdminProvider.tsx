@@ -4,7 +4,6 @@ import React, { memo, useEffect, useMemo } from "react";
 import type { ReactminData } from "../types/types";
 
 import Router from "./Router";
-import Layout from "../../reactmin/components/layouts/Layout";
 
 interface IAdminProvider {
   queryClient: QueryClient;
@@ -22,7 +21,7 @@ function AdminProvider({ queryClient, layout, children }: IAdminProvider) {
 
   return (
     <>
-      <Router layout={layout || <Layout />}>{children}</Router>
+      <Router layout={layout || <Layout}>{children}</Router>
     </>
   );
 }
