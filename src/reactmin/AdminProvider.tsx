@@ -34,6 +34,8 @@ function AdminProvider<T extends string>({
     }
   }, [dataProvider]);
 
+  console.log(config);
+
   return (
     <>
       <ReactminProvider>

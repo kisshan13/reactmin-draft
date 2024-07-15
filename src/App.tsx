@@ -1,34 +1,62 @@
 import React from "react";
 import "./App.css";
-import AdminProvider from "./reactmin/AdminProvider";
-import Resource from "./reactmin/components/Resource";
-import dataProvider from "./reactmin/utils/dataprovider";
-import { UserIcon } from "lucide-react";
-import DataFrame from "./reactmin/components/data/DataFrame";
-import DataField from "./reactmin/components/data/DataField";
-import UserDataFrame from "./components/resources/UserDataFrame";
+import { BrowserRouter, Routes } from "react-router-dom";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "./QueryClient";
+import {
+  AdminProvider,
+  dataProvider,
+  Reactmin,
+  Resource,
+  ResourceCreate,
+  ResourceDelete,
+  ResourceRead,
+  ResourceUpdate,
+} from "./packages";
 
 interface AppComponent extends React.HTMLAttributes<HTMLDivElement> {
   source: string;
 }
 
-const provider = dataProvider({
-  navIconMapper: {
-    user: <UserIcon />,
-  },
-  roles: ["user", "admin"],
-  title: "Home",
+// const provider = dataProvider({
+//   navIconMapper: {
+//     user: <UserIcon />,
+//   },
+//   roles: ["user", "admin"],
+//   title: "Home",
+// });
+
+const data = dataProvider({
+  title: "Admin",
 });
+
+function ResourceUser() {
+  return (
+    <Resource name="hello">
+      <ResourceCreate />
+      <ResourceDelete />
+      <ResourceUpdate />
+      <ResourceRead />
+    </Resource>
+  );
+}
 
 function App() {
   return (
     <>
-      <AdminProvider dataProvider={provider}>
-        <Resource name="user" view="TABLE" dataFrame={<UserDataFrame />} />
-        {/* <Resource name="dod" view="TABLE" /> */}
-        {/* <Resource name="user" view="TABLE" /> */}
-        {/* <Resource name="user" view="TABLE" /> */}
-      </AdminProvider>
+      <QueryClientProvider client={queryClient}>
+        <Reactmin>
+          <AdminProvider queryClient={queryClient} data={data}>
+            <ResourceUser />
+            <Resource name="hello">
+              <ResourceCreate />
+              <ResourceDelete />
+              <ResourceUpdate />
+              <ResourceRead />
+            </Resource>
+          </AdminProvider>
+        </Reactmin>
+      </QueryClientProvider>
     </>
   );
 }
