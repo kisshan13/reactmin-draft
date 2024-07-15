@@ -18,28 +18,9 @@ interface AppComponent extends React.HTMLAttributes<HTMLDivElement> {
   source: string;
 }
 
-// const provider = dataProvider({
-//   navIconMapper: {
-//     user: <UserIcon />,
-//   },
-//   roles: ["user", "admin"],
-//   title: "Home",
-// });
-
 const data = dataProvider({
   title: "Admin",
 });
-
-function ResourceUser() {
-  return (
-    <Resource name="hello">
-      <ResourceCreate />
-      <ResourceDelete />
-      <ResourceUpdate />
-      <ResourceRead />
-    </Resource>
-  );
-}
 
 function App() {
   return (
@@ -47,8 +28,13 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Reactmin>
           <AdminProvider queryClient={queryClient} data={data}>
-            <ResourceUser />
             <Resource name="hello">
+              <ResourceCreate />
+              <ResourceDelete />
+              <ResourceUpdate />
+              <ResourceRead />
+            </Resource>
+            <Resource name="why">
               <ResourceCreate />
               <ResourceDelete />
               <ResourceUpdate />

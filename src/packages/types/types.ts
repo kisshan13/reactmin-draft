@@ -17,12 +17,8 @@ export interface ReactminData {
   title: string;
 }
 
-export interface ReactminResourceProps {
-  name: string;
-  path?: string;
-  children?: React.ReactNode | React.ReactNode[];
-}
 
 export interface ReactminResource {
-  component: string;
+  name: string;
+  path?: string;
 }

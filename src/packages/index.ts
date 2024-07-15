@@ -1,7 +1,7 @@
 import Reactmin from "./components/Reactmin";
 import AdminProvider from "./components/AdminProvider";
-import Resource from "./components/Reource";
-
+import Resource from "./components/Resource";
+import Router from "./components/Router";
 import {
   ResourceRead,
   ResourceCreate,

@@ -1,17 +1,38 @@
-function ResourceRead() {
-  return <></>;
+import { memo } from "react";
+import { useResource } from "./Resource";
+
+function Read() {
+  return <ResourceExecutor option="READ"></ResourceExecutor>;
 }
 
-function ResourceUpdate() {
-  return <></>;
+function Update() {
+  return <ResourceExecutor option="UPDATE"></ResourceExecutor>;
 }
 
-function ResourceDelete() {
-  return <></>;
+function Delete() {
+  return <ResourceExecutor option="DELETE"></ResourceExecutor>;
 }
 
-function ResourceCreate() {
-  return <></>;
+function Create() {
+  return <ResourceExecutor option="CREATE"></ResourceExecutor>;
+}
+function ResourceExecutor({
+  option,
+}: {
+  option: "CREATE" | "READ" | "UPDATE" | "DELETE";
+}) {
+  const resource = useResource();
+
+  console.log(resource);
+
+  return (
+    <>
+      <h1>hello</h1>
+    </>
+  );
 }
 
-export { ResourceRead, ResourceUpdate, ResourceCreate, ResourceDelete };
+export const ResourceRead = memo(Read);
+export const ResourceUpdate = memo(Update);
+export const ResourceDelete = memo(Delete);
+export const ResourceCreate = memo(Create);

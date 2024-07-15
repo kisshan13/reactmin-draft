@@ -1,8 +1,10 @@
 import type { QueryClient } from "react-query";
 import { useReactmin } from "../contexts/ReactminContext";
-import React, { useEffect } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import type { ReactminData } from "../types/types";
-import resourceExtractor from "../utils/resource-extractor";
+
+import Router from "./Router";
+import Layout from "../../reactmin/components/layouts/Layout";
 
 interface IAdminProvider {
   queryClient: QueryClient;
@@ -18,9 +20,11 @@ function AdminProvider({ queryClient, layout, children }: IAdminProvider) {
     bootstrap({ queryClient });
   }, [queryClient]);
 
-  console.log(resourceExtractor(children));
-
-  return <></>;
+  return (
+    <>
+      <Router layout={layout || <Layout />}>{children}</Router>
+    </>
+  );
 }
 
-export default AdminProvider;
+export default memo(AdminProvider);

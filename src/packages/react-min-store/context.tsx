@@ -9,7 +9,7 @@ import useStore from "./store";
 
 const ReactminStore = createContext<ReturnType<typeof useStore>>(null as any);
 
-const useReactminStore = (selector: (store: any) => any) => {
+function useReactminStore<T>(selector: (store: Map<string, any>) => any) {
   const store = useContext(ReactminStore);
 
   if (!store) {
@@ -20,7 +20,7 @@ const useReactminStore = (selector: (store: any) => any) => {
     selector(store.get())
   );
 
-  return [state, store.set];
+  return { store: state as T, set: store.set };
 };
 
 function ReactminStoreProvider({ children }: { children: React.ReactNode }) {

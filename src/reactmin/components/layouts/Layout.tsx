@@ -54,11 +54,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { Badge } from "../../ui/badge";
 import type { ResourceProps, ResourceType } from "../../types/types";
 
-export default function Layout({
-  resource,
-}: {
-  resource: ResourceType<ResourceProps>[];
-}) {
+// {
+//   resource,
+// }: {
+//   resource: ResourceType<ResourceProps>[];
+// }
+
+export default function Layout() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -71,7 +73,7 @@ export default function Layout({
             <span className="sr-only">Acme Inc</span>
           </Link>
 
-          {resource.map((res) => (
+          {[{props: {name: "Home"}}].map((res) => (
             <TooltipProvider key={res.props.name}>
               <Tooltip>
                 <TooltipTrigger asChild>
