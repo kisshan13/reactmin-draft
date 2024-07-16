@@ -1,43 +1,56 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useReactminStore } from "../react-min-store";
 import { ReactminResource } from "../types/types";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import { LucidePersonStanding } from "lucide-react";
 
-export default function RegisterRoutes({
+function RegisterRoutes({
   children,
   layout,
 }: {
   children: React.ReactNode | React.ReactNode[];
   layout: React.ReactNode;
 }) {
-  const { store } = useReactminStore<Map<string, ReactminResource>>(
+  const { store } = useReactminStore<Record<string, ReactminResource>>(
     (store) => store
   );
 
   const configuration = useMemo(() => {
-    const config: ReactminResource[] = [];
-
-    store.forEach((value, key) => {
-      config.push(value);
+    return Object.keys(store).map((key, i) => {
+      return store[key];
     });
-
-    return config;
   }, [store]);
 
-  console.log(configuration);
+  useEffect(() => {
+    console.log(configuration);
+  }, [configuration]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={layout}>
-          {configuration.map((config) => (
-            <Route
-              path={config?.path || config.name}
-              element={<>{config.path}</>}
-            ></Route>
-          ))}
-        </Route>
+        {configuration?.length && (
+          <Route element={configuration ? layout : <></>}>
+            {configuration.map((config) => (
+              <Route
+                path={config?.path || config.name}
+                element={<>{config.path}</>}
+              ></Route>
+            ))}
+          </Route>
+        )}
+
+        {!configuration?.length && (
+          <Route path="*" element={<LucidePersonStanding />} />
+        )}
       </Routes>
+
+      <div className="_reactmin.config" style={{ display: "none" }}>
+        {children}
+      </div>
     </BrowserRouter>
   );
 }
+
+const Router = memo(RegisterRoutes);
+
+export default Router;

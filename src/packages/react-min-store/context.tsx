@@ -1,15 +1,15 @@
 import {
   createContext,
-  useCallback,
   useContext,
-  useRef,
+  useMemo,
   useSyncExternalStore,
 } from "react";
 import useStore from "./store";
+import { ReactminResource } from "../types/types";
 
 const ReactminStore = createContext<ReturnType<typeof useStore>>(null as any);
 
-function useReactminStore<T>(selector: (store: Map<string, any>) => any) {
+function useReactminStore<T>(selector: (store: any) => Record<string, T>) {
   const store = useContext(ReactminStore);
 
   if (!store) {
@@ -21,7 +21,24 @@ function useReactminStore<T>(selector: (store: Map<string, any>) => any) {
   );
 
   return { store: state as T, set: store.set };
-};
+}
+
+function useReactminNav() {
+  const { store } = useReactminStore<Record<string, ReactminResource>>(
+    (store) => store
+  );
+
+  const navigation = useMemo(() => {
+    return Object.keys(store).map((key) => {
+      return {
+        name: store[key].name,
+        path: store[key].path,
+      };
+    });
+  }, [store]);
+
+  return navigation;
+}
 
 function ReactminStoreProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -31,4 +48,4 @@ function ReactminStoreProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export { useReactminStore, ReactminStoreProvider };
+export { useReactminStore, useReactminNav, ReactminStoreProvider };

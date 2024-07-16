@@ -1,37 +1,23 @@
-import { createContext, memo, useContext, useEffect, useMemo } from "react";
+import { memo, useEffect } from "react";
 import { useReactminStore } from "../react-min-store";
 import type { ReactminResource } from "../types/types";
-
-const ResourceContext = createContext<{ name: string }>(null as any);
-
-export const useResource = () => {
-  const name = useContext(ResourceContext);
-
-  if (!name) {
-    throw new Error("Must be used within a <Resource></Resource> Component.");
-  }
-
-  return name;
-};
+import useResourceChildrenParser from "../hooks/useResourceParser";
 
 function Resource({
   children,
   ...props
 }: ReactminResource & { children: React.ReactNode | React.ReactNode[] }) {
-  const { store, set } = useReactminStore((state) => state.get(props.name));
+  const { store, set } = useReactminStore((state) => state[props.name]);
+
+  const resourceConfig = useResourceChildrenParser({ props: children });
 
   useEffect(() => {
-    if (!store) {
-      set(props.name, props);
+    if (!store && (resourceConfig || resourceConfig === false)) {
+      set(props.name, { ...props, resource: resourceConfig });
     }
-    console.log(store);
-  }, [props, store]);
+  }, [resourceConfig]);
 
-  return (
-    <ResourceContext.Provider value={{ name: props.name }}>
-      {children}
-    </ResourceContext.Provider>
-  );
+  return <></>;
 }
 
 export default memo(Resource);

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./QueryClient";
 import {
@@ -8,10 +8,7 @@ import {
   dataProvider,
   Reactmin,
   Resource,
-  ResourceCreate,
-  ResourceDelete,
-  ResourceRead,
-  ResourceUpdate,
+  ResourceType,
 } from "./packages";
 
 interface AppComponent extends React.HTMLAttributes<HTMLDivElement> {
@@ -29,16 +26,13 @@ function App() {
         <Reactmin>
           <AdminProvider queryClient={queryClient} data={data}>
             <Resource name="hello">
-              <ResourceCreate />
-              <ResourceDelete />
-              <ResourceUpdate />
-              <ResourceRead />
+              <ResourceType type="CREATE" name="Hello" role="*" />
             </Resource>
             <Resource name="why">
-              <ResourceCreate />
-              <ResourceDelete />
-              <ResourceUpdate />
-              <ResourceRead />
+              <ResourceType type="CREATE" name="Hello" role="*" />
+            </Resource>
+            <Resource name="hi">
+              <ResourceType type="CREATE" name="Hello" role="*" />
             </Resource>
           </AdminProvider>
         </Reactmin>

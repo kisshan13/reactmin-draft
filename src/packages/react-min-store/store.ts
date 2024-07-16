@@ -1,13 +1,16 @@
 import { useCallback, useRef } from "react";
 
 function useStore() {
-  const store = useRef<Map<string, any>>(new Map());
+  const store = useRef<Record<string, any>>({});
 
   const get = useCallback(() => store.current, []);
   const subscribers = useRef(new Set<() => void>());
 
   const set = useCallback((key: string, value: any) => {
-    store.current?.set(key, value);
+    const obj: Record<string, any> = {};
+
+    obj[key] = value;
+    store.current = { ...store.current, ...obj };
     return subscribers.current.forEach((callback) => callback());
   }, []);
 
