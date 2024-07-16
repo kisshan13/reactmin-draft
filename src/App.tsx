@@ -20,6 +20,8 @@ const data = dataProvider({
 });
 
 function App() {
+  console.log(<ResourceType type="CREATE" name="Hello" role="*" />);
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
