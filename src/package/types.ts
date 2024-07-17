@@ -1,8 +1,14 @@
 import React from "react";
+import type { QueryClient } from "react-query";
 
 export enum ActiminComponents {
   Resource = "Resource",
   ResourceType = "ResourceType",
+}
+
+export interface Reactmin {
+  queryClient: QueryClient;
+  name: string;
 }
 
 export type ReactChildren = React.ReactNode | React.ReactNode[];
@@ -28,4 +34,14 @@ export interface Component<T> {
   type: {
     name: string;
   };
+}
+
+export interface AdminProviderProps {
+  layout?: React.ReactNode;
+  defaultLoader?: React.ReactNode;
+}
+
+export interface RouterProps {
+  layout?: React.ReactNode;
+  defaultLoader?: React.ReactNode;
 }

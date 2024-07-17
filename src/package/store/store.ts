@@ -8,11 +8,11 @@ import {
 import type { Resource, ResourceType } from "../types";
 
 export const ResourceStore = createContext<ReturnType<typeof useStore>>(
-  {} as any
+  null as any
 );
 
 export function useStore() {
-  const store = useRef<Record<string, any>>();
+  const store = useRef<Record<string, any>>({});
   const subscribers = useRef(new Set<() => void>());
 
   const get = useCallback(() => store.current, []);
