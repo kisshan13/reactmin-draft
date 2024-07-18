@@ -4,6 +4,8 @@ import type { QueryClient } from "react-query";
 export enum ActiminComponents {
   Resource = "Resource",
   ResourceType = "ResourceType",
+
+  TextField = "TextField",
 }
 
 export interface Reactmin {
@@ -14,6 +16,8 @@ export interface Reactmin {
 export type ReactChildren = React.ReactNode | React.ReactNode[];
 
 export type ResourceAction = "create" | "read" | "update" | "delete";
+
+export type FunctionSignature = (props: any) => any;
 
 export interface Resource {
   name: string;
@@ -44,4 +48,18 @@ export interface AdminProviderProps {
 export interface RouterProps {
   layout?: React.ReactNode;
   defaultLoader?: React.ReactNode;
+}
+
+export interface Dataframe {
+  queryKey: string;
+}
+
+export interface DataTextField {
+  field: string;
+  value: string;
+}
+
+export interface DataFunctionField {
+  field: string;
+  value: FunctionSignature;
 }

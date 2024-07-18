@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useResourceExtractor from "../hooks/useResourceExtractor";
+import useResourceExtractor from "./useResourceExtractor";
 import { useResourceStore } from "../store/store";
 import type { ReactChildren, Resource, ResourceType } from "../types";
 

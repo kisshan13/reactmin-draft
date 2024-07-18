@@ -14,7 +14,16 @@ export function getComponentName(component: React.ReactNode) {
 
 export function isValidComponentForExtracting(
   children: React.ReactNode,
-  component: string
+  component: string | string[]
 ) {
-  return isValidElement(children) || getComponentName(children) !== component;
+  const isArray = Array.isArray(component);
+  const componentName = getComponentName(children);
+
+  if (isArray) {
+    const isComponentExists = component.find((comp) => componentName === comp);
+
+    return isValidElement(children) && !!isComponentExists;
+  }
+
+  return isValidElement(children) && componentName === component;
 }
