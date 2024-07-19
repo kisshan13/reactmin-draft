@@ -14,7 +14,10 @@ function LayoutRoutes({
     <Routes>
       <Route element={layout || <DefaultLayout />}>
         {resources.map((resource) => (
-          <Route path={resource.path || resource.name} element={<>hii</>} />
+          <Route
+            path={resource.path || resource.name}
+            element={resource.types[0].component || <>hii</>}
+          />
         ))}
       </Route>
     </Routes>

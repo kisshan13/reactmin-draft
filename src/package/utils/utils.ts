@@ -1,9 +1,11 @@
 import React, { isValidElement } from "react";
 
-import type { Component } from "../types";
+import { ActiminComponents, type Component } from "../types";
 
 export function getComponentName(component: React.ReactNode) {
   const componentValue = component?.valueOf() as Component<any>;
+
+  console.log(componentValue);
 
   if (!componentValue?.type?.name) {
     throw new Error("Not a custom component.");
@@ -26,4 +28,22 @@ export function isValidComponentForExtracting(
   }
 
   return isValidElement(children) && componentName === component;
+}
+
+export function getPropsByComponent(component: string, props: any) {
+  switch (component) {
+    case ActiminComponents.TextField:
+      return {
+        field: props?.field,
+        isFunction: false,
+        value: props?.value,
+      };
+
+    case ActiminComponents.FunctionField:
+      return {
+        field: props?.field,
+        isFunction: true,
+        value: props?.value,
+      };
+  }
 }

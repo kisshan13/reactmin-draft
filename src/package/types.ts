@@ -6,6 +6,7 @@ export enum ActiminComponents {
   ResourceType = "ResourceType",
 
   TextField = "TextField",
+  FunctionField = "FunctionField",
 }
 
 export interface Reactmin {
@@ -62,4 +63,10 @@ export interface DataTextField {
 export interface DataFunctionField {
   field: string;
   value: FunctionSignature;
+}
+
+export interface DataExtracted {
+  field: string;
+  isFunction: boolean;
+  value: string | FunctionSignature;
 }
