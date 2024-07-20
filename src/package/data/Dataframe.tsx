@@ -9,13 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { useResourceEntity } from "../resource/useResourceEntity";
 
 function Dataframe({
-  queryKey,
   serials = true,
+  actions = true,
   children,
 }: Dataframe & { children: ReactChildren }) {
   const dataFrame = useDataExtractor(children);
+  const entity = useResourceEntity();
 
   const fields = useMemo(() => {
     return dataFrame.map((d) => d?.field);
@@ -30,6 +32,7 @@ function Dataframe({
             {fields.map((head) => (
               <TableHead key={head}>{head}</TableHead>
             ))}
+            {actions && <TableHead></TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody></TableBody>

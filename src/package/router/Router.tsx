@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import useReactminRouter from "./useReactminRouter";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import BaseRouter from "./BaseRouter";
@@ -28,4 +28,4 @@ function Router({ defaultLoader, layout }: RouterProps) {
   );
 }
 
-export default Router;
+export default memo(Router);

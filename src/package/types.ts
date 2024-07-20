@@ -18,6 +18,8 @@ export type ReactChildren = React.ReactNode | React.ReactNode[];
 
 export type ResourceAction = "create" | "read" | "update" | "delete";
 
+export type Action = "read" | "delete" | "update";
+
 export type FunctionSignature = (props: any) => any;
 
 export interface Resource {
@@ -32,6 +34,7 @@ export interface Resource {
 export interface ResourceEntity {
   title: string;
   description: string;
+  queryKey: string;
 }
 
 export interface ResourceType {
@@ -60,8 +63,8 @@ export interface RouterProps {
 }
 
 export interface Dataframe {
-  queryKey: string;
   serials?: boolean;
+  actions?: boolean;
 }
 
 export interface DataTextField {
@@ -74,8 +77,22 @@ export interface DataFunctionField {
   value: FunctionSignature;
 }
 
+export interface DataActionField {
+  field: string;
+  actionType: Action;
+}
+
 export interface DataExtracted {
   field: string;
   isFunction: boolean;
   value: string | FunctionSignature;
+}
+
+export interface DataAPI {
+  findOne: (resource: string, data: any) => Promise<any>;
+  find: (resource: string, data: any) => Promise<any>;
+  del: (resource: string, data: any) => Promise<any>;
+  update: (resource: string, data: any) => Promise<any>;
+  create: (resource: string, data: any) => Promise<any>;
+  custom: Record<string, any>;
 }

@@ -18,10 +18,21 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
           throw new Error("<ResourceType> missing required props.");
         }
 
+        const isDeleteOrUpdate =
+          props?.type === "delete" ||
+          props?.type === "update" ||
+          props?.type === "create";
+
+        const isModal = isDeleteOrUpdate
+          ? props?.isModal === false
+            ? false
+            : true
+          : false;
+
         return [
           {
             role: props.role,
-            isModal: props.isModal,
+            isModal: isModal,
             component: props.component,
             type: props.type,
             page: props?.page,
@@ -35,10 +46,7 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
     } else {
       const mappedResources = children.map((res) => {
         if (
-          isValidComponentForExtracting(
-            children,
-            ActiminComponents.ResourceType
-          )
+          isValidComponentForExtracting(res, ActiminComponents.ResourceType)
         ) {
           const props = (res?.valueOf() as any)["props"] as ResourceType;
 
@@ -46,9 +54,20 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
             throw new Error("<ResourceType> missing required props.");
           }
 
+            const isDeleteOrUpdate =
+              props?.type === "delete" ||
+              props?.type === "update" ||
+              props?.type === "create";
+
+            const isModal = isDeleteOrUpdate
+              ? props?.isModal === false
+                ? false
+                : true
+              : false;
+
           return {
             role: props.role,
-            isModal: props.isModal,
+            isModal: isModal,
             component: props.component,
             type: props.type,
             page: props?.page,
