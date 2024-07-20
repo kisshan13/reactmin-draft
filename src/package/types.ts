@@ -25,6 +25,13 @@ export interface Resource {
   path?: string;
   noLayout?: boolean;
   layout?: React.ReactNode;
+  pageTitle?: string;
+  pageDescription?: string;
+}
+
+export interface ResourceEntity {
+  title: string;
+  description: string;
 }
 
 export interface ResourceType {
@@ -32,6 +39,7 @@ export interface ResourceType {
   component: React.ReactNode;
   isModal?: boolean; // Works only for "update", "create", & "delete".
   role?: string;
+  page?: (children: any) => ReactChildren;
 }
 
 export interface Component<T> {
@@ -53,6 +61,7 @@ export interface RouterProps {
 
 export interface Dataframe {
   queryKey: string;
+  serials?: boolean;
 }
 
 export interface DataTextField {

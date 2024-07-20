@@ -8,14 +8,8 @@ import Resource from "./package/resource/Resource";
 import ResourceType from "./package/resource/ResourceType";
 import Dataframe from "./package/data/Dataframe";
 import { FunctionField, TextField } from "./package/data/Fields";
-
-// interface AppComponent extends React.HTMLAttributes<HTMLDivElement> {
-//   source: string;
-// }
-
-// const data = dataProvider({
-//   title: "Admin",
-// });
+import { ReactChildren } from "./package/types";
+import UserResource from "./resources/User.resource";
 
 function Frame() {
   return (
@@ -26,15 +20,24 @@ function Frame() {
   );
 }
 
+function Page({ children }: { children: ReactChildren }) {
+  return <div className=" p-10 border border-indigo-600">{children}</div>;
+}
+
 function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <Reactmin queryClient={queryClient} name="My React App">
           <AdminProvider>
-            <Resource name="user">
-              <ResourceType type="create" component={<Frame />} />
-            </Resource>
+            <UserResource />
+            {/* <Resource name="user">
+              <ResourceType
+                type="create"
+                component={<Frame />}
+                page={(children) => <Page>{children}</Page>}
+              />
+            </Resource> */}
           </AdminProvider>
         </Reactmin>
       </QueryClientProvider>

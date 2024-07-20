@@ -24,6 +24,7 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
             isModal: props.isModal,
             component: props.component,
             type: props.type,
+            page: props?.page,
           },
         ];
       } else {
@@ -50,6 +51,7 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
             isModal: props.isModal,
             component: props.component,
             type: props.type,
+            page: props?.page,
           };
         } else {
         }

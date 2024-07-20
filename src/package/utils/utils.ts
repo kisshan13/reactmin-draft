@@ -5,8 +5,6 @@ import { ActiminComponents, type Component } from "../types";
 export function getComponentName(component: React.ReactNode) {
   const componentValue = component?.valueOf() as Component<any>;
 
-  console.log(componentValue);
-
   if (!componentValue?.type?.name) {
     throw new Error("Not a custom component.");
   }

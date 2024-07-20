@@ -1,10 +1,15 @@
-import { useState } from "react";
+import type { ReactChildren, ResourceEntity } from "../types";
+import { ResourceEntityContext } from "./useResourceEntity";
 
-function ResourceEntity({ name }: { name: string }) {
-  const [dataframes, setDataframes] = useState(null);
-  //   const [] = useState();
-
-  return <></>;
+function ResourceEntity({
+  children,
+  ...props
+}: ResourceEntity & { children: ReactChildren }) {
+  return (
+    <ResourceEntityContext.Provider value={props}>
+      {children}
+    </ResourceEntityContext.Provider>
+  );
 }
 
 export default ResourceEntity;
