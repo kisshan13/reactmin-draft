@@ -5,6 +5,7 @@ import type { ReactChildren, Resource, ResourceType } from "../types";
 
 function Resource({
   children,
+  manager,
   ...props
 }: Resource & { children: ReactChildren }) {
   const resource = useResourceExtractor(children);

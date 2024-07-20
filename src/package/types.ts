@@ -1,5 +1,6 @@
 import React from "react";
 import type { QueryClient } from "react-query";
+import ApiManager from "./data-api/manager";
 
 export enum ActiminComponents {
   Resource = "Resource",
@@ -27,6 +28,7 @@ export interface Resource {
   path?: string;
   noLayout?: boolean;
   layout?: React.ReactNode;
+  manager?: ApiManager;
   pageTitle?: string;
   pageDescription?: string;
 }
@@ -94,5 +96,17 @@ export interface DataAPI {
   del: (resource: string, data: any) => Promise<any>;
   update: (resource: string, data: any) => Promise<any>;
   create: (resource: string, data: any) => Promise<any>;
-  custom: Record<string, any>;
+  custom?: Record<string, any>;
+}
+export interface ResgiterApiOptions {
+  findOne: (data: any) => Promise<any>;
+  find: (data: any) => Promise<any>;
+  del: (data: any) => Promise<any>;
+  update: (data: any) => Promise<any>;
+  create: (data: any) => Promise<any>;
+}
+
+export interface DataApiWithManagers {
+  managers: ApiManager[];
+  operations: DataAPI;
 }

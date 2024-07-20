@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { DataAPI } from "../types";
+import { DataAPI, DataApiWithManagers } from "../types";
 
 {
   findOne: (resource: string, data: any) => {};
@@ -8,10 +8,10 @@ import { DataAPI } from "../types";
   update: (resource: string, data: any) => {};
 }
 
-const DataContext = createContext<DataAPI>({} as any);
+const DataApiContext = createContext<DataApiWithManagers>({} as any);
 
 export function useDataApi() {
-  const api = useContext(DataContext);
+  const api = useContext(DataApiContext);
 
   if (!api) {
     throw new Error(
@@ -22,8 +22,8 @@ export function useDataApi() {
   return api;
 }
 
-export function useAPI() {
-  const dataApi = useDataApi();
+// export function useAPI() {
+//   const dataApi = useDataApi();
 
-  return dataApi.custom;
-}
+//   // return dataApi.custom;
+// }
