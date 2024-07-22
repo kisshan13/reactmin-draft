@@ -9,6 +9,7 @@ import {
 const validComponents = [
   ActiminComponents.TextField,
   ActiminComponents.FunctionField,
+  ActiminComponents.ActionField,
 ];
 
 export function useDataExtractor(children: ReactChildren) {

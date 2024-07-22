@@ -5,8 +5,10 @@ import { Resource, ResourceType } from "../types";
 
 function RouteElement({
   resource,
+  type,
 }: {
   resource: Resource & { types: ResourceType[] };
+  type: ResourceType;
 }) {
   console.log(resource);
   return (
@@ -14,12 +16,13 @@ function RouteElement({
       queryKey={resource.name}
       title={resource.name}
       description={resource.name}
+      path={resource?.path || resource.name}
     >
-      {resource.types[0].page ? (
-        resource.types[0].page(<>{resource.types[0].component || <>hii</>}</>)
+      {type.page ? (
+        type.page(<>{type.component || <>hii</>}</>)
       ) : (
         <DefaultPage>
-          <>{resource.types[0].component || <></>}</>
+          <>{type.component || <></>}</>
         </DefaultPage>
       )}
     </ResourceEntity>

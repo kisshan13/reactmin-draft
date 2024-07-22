@@ -1,6 +1,6 @@
 import React from "react";
 import type { QueryClient } from "react-query";
-import ApiManager from "./data-api/manager";
+import ApiManager from "./api/manager";
 
 export enum ActiminComponents {
   Resource = "Resource",
@@ -8,6 +8,7 @@ export enum ActiminComponents {
 
   TextField = "TextField",
   FunctionField = "FunctionField",
+  ActionField = "ActionField",
 }
 
 export interface Reactmin {
@@ -37,6 +38,7 @@ export interface ResourceEntity {
   title: string;
   description: string;
   queryKey: string;
+  path: string;
 }
 
 export interface ResourceType {
@@ -56,6 +58,7 @@ export interface Component<T> {
 
 export interface AdminProviderProps {
   layout?: React.ReactNode;
+  managers?: ApiManager[];
   defaultLoader?: React.ReactNode;
 }
 
@@ -78,10 +81,17 @@ export interface DataFunctionField {
   field: string;
   value: FunctionSignature;
 }
+export interface DataFunctionField {
+  field: string;
+  value: FunctionSignature;
+}
 
 export interface DataActionField {
   field: string;
-  actionType: Action;
+  type: Action[];
+  read?: (value: any) => ReactChildren;
+  del?: (value: any) => ReactChildren;
+  update?: (value: any) => ReactChildren;
 }
 
 export interface DataExtracted {
@@ -91,22 +101,46 @@ export interface DataExtracted {
 }
 
 export interface DataAPI {
-  findOne: (resource: string, data: any) => Promise<any>;
-  find: (resource: string, data: any) => Promise<any>;
-  del: (resource: string, data: any) => Promise<any>;
-  update: (resource: string, data: any) => Promise<any>;
-  create: (resource: string, data: any) => Promise<any>;
+  findOne: (resource: string, data: ManagerPayloadData) => Promise<any>;
+  find: (resource: string, data: ManagerPayloadData) => Promise<ApiResponse>;
+  del: (resource: string, data: ManagerPayloadData) => Promise<any>;
+  update: (resource: string, data: ManagerPayloadData) => Promise<any>;
+  create: (resource: string, data: ManagerPayloadData) => Promise<any>;
   custom?: Record<string, any>;
 }
+
 export interface ResgiterApiOptions {
-  findOne: (data: any) => Promise<any>;
-  find: (data: any) => Promise<any>;
-  del: (data: any) => Promise<any>;
-  update: (data: any) => Promise<any>;
-  create: (data: any) => Promise<any>;
+  findOne: (data: ManagerPayloadData) => Promise<any>;
+  find: (data: ManagerPayloadData) => Promise<ApiResponse>;
+  del: (data: ManagerPayloadData) => Promise<any>;
+  update: (data: ManagerPayloadData) => Promise<any>;
+  create: (data: ManagerPayloadData) => Promise<any>;
+}
+
+export interface ApiResponse {
+  data: any;
+  metadata: Pagination;
 }
 
 export interface DataApiWithManagers {
   managers: ApiManager[];
   operations: DataAPI;
+}
+
+export interface Pagination {
+  page: number;
+  size: number;
+  totalPage: number;
+  totalItems: number;
+}
+
+interface PayloadPagination {
+  pagination: Omit<Omit<Pagination, "totalPage">, "totalItems">;
+}
+
+export interface ManagerPayloadData {
+  role: string;
+  filters: PayloadPagination & Record<string, any>;
+  data?: any;
+  id?: any;
 }

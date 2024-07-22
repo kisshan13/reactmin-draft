@@ -14,12 +14,63 @@ function LayoutRoutes({
   return (
     <Routes>
       <Route element={layout || <DefaultLayout />}>
-        {resources.map((resource) => (
-          <Route
-            path={resource.path || resource.name}
-            element={<RouteElement resource={resource} />}
-          />
-        ))}
+        {resources.map((resource) => {
+          return resource.types.map((res) => {
+            switch (res.type) {
+              case "create":
+                if (!res.isModal) {
+                  return (
+                    <Route
+                      path={
+                        (resource.path ? resource.path : resource.name) + "/new"
+                      }
+                      element={<RouteElement resource={resource} type={res} />}
+                    />
+                  );
+                }
+
+                return <></>;
+              case "read":
+                return (
+                  <Route
+                    path={resource.path ? resource.path : resource.name}
+                    element={<RouteElement resource={resource} type={res} />}
+                  />
+                );
+              case "update":
+                if (!res.isModal) {
+                  return (
+                    <Route
+                      path={
+                        (resource.path ? resource.path : resource.name) +
+                        "/:slug/edit"
+                      }
+                      element={<RouteElement resource={resource} type={res} />}
+                    />
+                  );
+                }
+
+                return <></>;
+              case "delete":
+                if (!res.isModal) {
+                  return (
+                    <Route
+                      path={
+                        (resource.path ? resource.path : resource.name) +
+                        "/:slug/delete"
+                      }
+                      element={<RouteElement resource={resource} type={res} />}
+                    />
+                  );
+                }
+
+                return <></>;
+
+              default:
+                return <></>;
+            }
+          });
+        })}
       </Route>
     </Routes>
   );

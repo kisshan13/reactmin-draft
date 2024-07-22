@@ -35,6 +35,7 @@ export function getPropsByComponent(component: string, props: any) {
         field: props?.field,
         isFunction: false,
         value: props?.value,
+        isActionField: false,
       };
 
     case ActiminComponents.FunctionField:
@@ -42,6 +43,31 @@ export function getPropsByComponent(component: string, props: any) {
         field: props?.field,
         isFunction: true,
         value: props?.value,
+        isActionField: false,
+      };
+
+    case ActiminComponents.ActionField:
+      return {
+        field: props?.field,
+        isFunction: false,
+        isActionField: true,
+        read:
+          typeof props?.read === "function"
+            ? (value: any) => props?.read(value)
+            : false,
+        del:
+          typeof props?.del === "function"
+            ? (value: any) => props?.del(value)
+            : false,
+        update:
+          typeof props?.update === "function"
+            ? (value: any) => props?.update(value)
+            : false,
+
+        custom:
+          typeof props?.custom === "function"
+            ? (value: any) => props?.custom(value)
+            : false,
       };
   }
 }

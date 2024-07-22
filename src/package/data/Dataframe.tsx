@@ -5,11 +5,16 @@ import { useDataExtractor } from "./useDataExtractor";
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useResourceEntity } from "../resource/useResourceEntity";
+import { useResourceEntity, useResourceEntityVerbose } from "../resource/useResourceEntity";
+import { useApi } from "../api/useApi";
+import { useQuery } from "react-query";
+import DefaultLoader from "../components/DefaultLoader";
+import { DeleteIcon, EyeIcon, PenIcon, Trash2Icon } from "lucide-react";
 
 function Dataframe({
   serials = true,
@@ -17,11 +22,32 @@ function Dataframe({
   children,
 }: Dataframe & { children: ReactChildren }) {
   const dataFrame = useDataExtractor(children);
-  const entity = useResourceEntity();
+  // const entity = useResourceEntity();
+  const entityVerbose = useResourceEntityVerbose();
+
+  const api = useApi();
+
+  const { data, isLoading } = useQuery({
+    queryKey: [entityVerbose.name],
+    queryFn: () =>
+      api.find(entityVerbose.name, {
+        role: "",
+        filters: {
+          pagination: {
+            page: 1,
+            size: 10,
+          },
+        },
+      }),
+  });
 
   const fields = useMemo(() => {
     return dataFrame.map((d) => d?.field);
   }, [dataFrame]);
+
+  if (isLoading) {
+    return <DefaultLoader />;
+  }
 
   return (
     <>
@@ -35,7 +61,40 @@ function Dataframe({
             {actions && <TableHead></TableHead>}
           </TableRow>
         </TableHeader>
-        <TableBody></TableBody>
+        <TableBody>
+          {data?.data &&
+            data?.data?.map((d, i) => (
+              <TableRow key={i}>
+                {serials && <TableCell>{i + 1}</TableCell>}
+                {dataFrame.map((frame) => {
+                  return (
+                    <>
+                      {!frame?.isFunction && (
+                        <TableCell>{d[frame?.value]}</TableCell>
+                      )}
+
+                      {frame?.isFunction && (
+                        <TableCell>{frame?.value(d)}</TableCell>
+                      )}
+
+                      {frame?.isActionField && (
+                        <TableCell>
+                          <div className=" flex items-center gap-5">
+                            {typeof frame?.read === "function" &&
+                              frame?.read(frame)}
+                            {typeof frame?.del === "function" &&
+                              frame?.del(frame)}
+                            {typeof frame?.update === "function" &&
+                              frame?.update(frame)}
+                          </div>
+                        </TableCell>
+                      )}
+                    </>
+                  );
+                })}
+              </TableRow>
+            ))}
+        </TableBody>
       </Table>
     </>
   );

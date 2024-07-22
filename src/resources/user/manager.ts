@@ -1,13 +1,26 @@
-import ApiManager from "../../package/data-api/manager";
+import ApiManager from "../../package/api/manager";
 
 const userApiManager = new ApiManager("user");
 
 userApiManager.registerApi({
-  find: (data) => data,
-  findOne: (data) => data,
-  create: (data) => data,
-  del: (data) => data,
-  update: (data) => data,
+  find: async (data) => {
+    const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+    const d = await res.json();
+
+    return {
+      data: d,
+      metadata: {
+        page: 1,
+        totalPage: 1,
+        size: 10,
+        totalItems: 10,
+      },
+    };
+  },
+  findOne: async (data) => data,
+  create: async (data) => data,
+  del: async (data) => data,
+  update: async (data) => data,
 });
 
 export default userApiManager;
