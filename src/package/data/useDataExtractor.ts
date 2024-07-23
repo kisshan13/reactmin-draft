@@ -21,15 +21,17 @@ export function useDataExtractor(children: ReactChildren) {
         const props = (children?.valueOf() as any)["props"] as any;
         const componentName = getComponentName(children);
 
-        if (!props) {
+        if (!props && import.meta.env.DEV) {
           throw new Error("<Dataframe> children missing props.");
         }
 
         return [getPropsByComponent(componentName, props)];
       } else {
-        throw new Error(
-          "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
-        );
+        if (import.meta.env.DEV) {
+          throw new Error(
+            "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
+          );
+        }
       }
     } else {
       const mappedData = children.map((res) => {
@@ -37,16 +39,18 @@ export function useDataExtractor(children: ReactChildren) {
           const props = (res?.valueOf() as any)["props"];
           const componentName = getComponentName(res);
 
-          if (!props) {
+          if (!props && import.meta.env.DEV) {
             throw new Error("<Dataframe> children missing props.");
           }
 
           return getPropsByComponent(componentName, props);
         }
 
-        throw new Error(
-          "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
-        );
+        if (import.meta.env.DEV) {
+          throw new Error(
+            "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
+          );
+        }
       });
 
       return mappedData;

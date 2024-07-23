@@ -8,9 +8,6 @@ import { ReactChildren } from "./package/types";
 import User from "./resources/user/User";
 import userApiManager from "./resources/user/manager";
 
-function Page({ children }: { children: ReactChildren }) {
-  return <div className=" p-10 border border-indigo-600">{children}</div>;
-}
 
 function App() {
   return (
@@ -19,13 +16,6 @@ function App() {
         <Reactmin queryClient={queryClient} name="My React App">
           <AdminProvider managers={[userApiManager]}>
             <User />
-            {/* <Resource name="user">
-              <ResourceType
-                type="create"
-                component={<Frame />}
-                page={(children) => <Page>{children}</Page>}
-              />
-            </Resource> */}
           </AdminProvider>
         </Reactmin>
       </QueryClientProvider>

@@ -14,7 +14,7 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
       ) {
         const props = (children?.valueOf() as any)["props"] as ResourceType;
 
-        if (!props) {
+        if (!props && import.meta.env.DEV) {
           throw new Error("<ResourceType> missing required props.");
         }
 
@@ -39,9 +39,11 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
           },
         ];
       } else {
-        throw new Error(
-          "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
-        );
+        if (import.meta.env.DEV) {
+          throw new Error(
+            "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
+          );
+        }
       }
     } else {
       const mappedResources = children.map((res) => {
@@ -50,20 +52,20 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
         ) {
           const props = (res?.valueOf() as any)["props"] as ResourceType;
 
-          if (!props) {
+          if (!props && import.meta.env.DEV) {
             throw new Error("<ResourceType> missing required props.");
           }
 
-            const isDeleteOrUpdate =
-              props?.type === "delete" ||
-              props?.type === "update" ||
-              props?.type === "create";
+          const isDeleteOrUpdate =
+            props?.type === "delete" ||
+            props?.type === "update" ||
+            props?.type === "create";
 
-            const isModal = isDeleteOrUpdate
-              ? props?.isModal === false
-                ? false
-                : true
-              : false;
+          const isModal = isDeleteOrUpdate
+            ? props?.isModal === false
+              ? false
+              : true
+            : false;
 
           return {
             role: props.role,
@@ -73,12 +75,13 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
             page: props?.page,
           };
         } else {
+          if (import.meta.env.DEV) {
+            throw new Error(
+              "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
+            );
+          }
         }
-        throw new Error(
-          "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
-        );
       });
-
       return mappedResources;
     }
   }, [children]);

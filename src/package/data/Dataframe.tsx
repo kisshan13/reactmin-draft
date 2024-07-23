@@ -10,11 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useResourceEntity, useResourceEntityVerbose } from "../resource/useResourceEntity";
+import {
+  useResourceEntity,
+  useResourceEntityVerbose,
+} from "../resource/useResourceEntity";
 import { useApi } from "../api/useApi";
 import { useQuery } from "react-query";
 import DefaultLoader from "../components/DefaultLoader";
 import { DeleteIcon, EyeIcon, PenIcon, Trash2Icon } from "lucide-react";
+import { DataActionContext } from "./useDataAction";
 
 function Dataframe({
   serials = true,
@@ -49,6 +53,18 @@ function Dataframe({
     return <DefaultLoader />;
   }
 
+  const onReadClick = () => {
+    console.log("reading");
+  };
+
+  const onDeleteClick = () => {
+    console.log("delete");
+  };
+
+  const onUpdateClick = () => {
+    console.log("update");
+  };
+
   return (
     <>
       <Table>
@@ -79,14 +95,15 @@ function Dataframe({
 
                       {frame?.isActionField && (
                         <TableCell>
-                          <div className=" flex items-center gap-5">
-                            {typeof frame?.read === "function" &&
-                              frame?.read(frame)}
-                            {typeof frame?.del === "function" &&
-                              frame?.del(frame)}
-                            {typeof frame?.update === "function" &&
-                              frame?.update(frame)}
-                          </div>
+                          <DataActionContext.Provider
+                            value={{
+                              onDeleteClick,
+                              onReadClick,
+                              onUpdateClick,
+                            }}
+                          >
+                            {frame?.component(d)}
+                          </DataActionContext.Provider>
                         </TableCell>
                       )}
                     </>

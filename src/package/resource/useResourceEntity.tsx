@@ -35,7 +35,7 @@ export function useResourceEntityVerbose() {
   const config = useMemo(() => {
     const operationConfig: Record<ResourceAction, ResourceType> = {} as any;
 
-    entity.types.forEach((type) => (operationConfig[type.type] = type));
+    entity.types?.forEach((type) => (operationConfig[type.type] = type));
 
     return {
       operationConfig,

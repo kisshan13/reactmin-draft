@@ -10,7 +10,7 @@ function ApiProvider({
   managers?: ApiManager[];
   children: ReactChildren;
 }) {
-  if (!Array.isArray(managers)) {
+  if (!Array.isArray(managers) && import.meta.env.DEV) {
     console.warn("No API Manager founds.");
     return <>{children}</>;
   }

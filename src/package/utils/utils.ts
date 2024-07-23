@@ -16,58 +16,58 @@ export function isValidComponentForExtracting(
   children: React.ReactNode,
   component: string | string[]
 ) {
-  const isArray = Array.isArray(component);
-  const componentName = getComponentName(children);
+  if (import.meta.env.DEV) {
+    const isArray = Array.isArray(component);
+    const componentName = getComponentName(children);
 
-  if (isArray) {
-    const isComponentExists = component.find((comp) => componentName === comp);
+    if (isArray) {
+      const isComponentExists = component.find(
+        (comp) => componentName === comp
+      );
 
-    return isValidElement(children) && !!isComponentExists;
+      return isValidElement(children) && !!isComponentExists;
+    }
+
+    return isValidElement(children) && componentName === component;
   }
 
-  return isValidElement(children) && componentName === component;
+  return true;
 }
 
 export function getPropsByComponent(component: string, props: any) {
-  switch (component) {
-    case ActiminComponents.TextField:
-      return {
-        field: props?.field,
-        isFunction: false,
-        value: props?.value,
-        isActionField: false,
-      };
+  if (import.meta.env.DEV) {
+    switch (component) {
+      case ActiminComponents.TextField:
+        return {
+          field: props?.field,
+          isFunction: false,
+          value: props?.value,
+          isActionField: false,
+        };
 
-    case ActiminComponents.FunctionField:
-      return {
-        field: props?.field,
-        isFunction: true,
-        value: props?.value,
-        isActionField: false,
-      };
+      case ActiminComponents.FunctionField:
+        return {
+          field: props?.field,
+          isFunction: true,
+          value: props?.value,
+          isActionField: false,
+        };
 
-    case ActiminComponents.ActionField:
-      return {
-        field: props?.field,
-        isFunction: false,
-        isActionField: true,
-        read:
-          typeof props?.read === "function"
-            ? (value: any) => props?.read(value)
-            : false,
-        del:
-          typeof props?.del === "function"
-            ? (value: any) => props?.del(value)
-            : false,
-        update:
-          typeof props?.update === "function"
-            ? (value: any) => props?.update(value)
-            : false,
-
-        custom:
-          typeof props?.custom === "function"
-            ? (value: any) => props?.custom(value)
-            : false,
-      };
+      case ActiminComponents.ActionField:
+        return {
+          field: props?.field,
+          isFunction: false,
+          isActionField: true,
+          component: props?.component,
+        };
+    }
   }
+
+  return {
+    field: props?.field,
+    isFunction: typeof props?.value === "function",
+    value: props?.value,
+    isActionField: !!props?.component,
+    component: props?.component,
+  };
 }

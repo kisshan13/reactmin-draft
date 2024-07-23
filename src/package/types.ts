@@ -89,9 +89,7 @@ export interface DataFunctionField {
 export interface DataActionField {
   field: string;
   type: Action[];
-  read?: (value: any) => ReactChildren;
-  del?: (value: any) => ReactChildren;
-  update?: (value: any) => ReactChildren;
+  component: (value: any) => ReactChildren;
 }
 
 export interface DataExtracted {

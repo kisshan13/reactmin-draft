@@ -2,6 +2,7 @@ import { memo } from "react";
 import DefaultPage from "../components/DefaultPage";
 import ResourceEntity from "../resource/ResourceEntity";
 import { Resource, ResourceType } from "../types";
+import ResourceEntityVerbose from "../resource/ResourceEntityVerbose";
 
 function RouteElement({
   resource,
@@ -18,13 +19,15 @@ function RouteElement({
       description={resource.name}
       path={resource?.path || resource.name}
     >
-      {type.page ? (
-        type.page(<>{type.component || <>hii</>}</>)
-      ) : (
-        <DefaultPage>
-          <>{type.component || <></>}</>
-        </DefaultPage>
-      )}
+      <ResourceEntityVerbose resource={{ ...resource }}>
+        {type.page ? (
+          type.page(<>{type.component || <>hii</>}</>)
+        ) : (
+          <DefaultPage>
+            <>{type.component || <></>}</>
+          </DefaultPage>
+        )}
+      </ResourceEntityVerbose>
     </ResourceEntity>
   );
 }
