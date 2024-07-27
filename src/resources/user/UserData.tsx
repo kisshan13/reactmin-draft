@@ -19,7 +19,7 @@ function UserActionField({ value }: { value: any }) {
 
   return (
     <div className=" flex items-center gap-5">
-      <button>
+      <button onClick={actions.onUpdateClick}>
         <Edit2Icon />
       </button>
       <button>
@@ -35,10 +35,10 @@ function UserActionField({ value }: { value: any }) {
 function UserData() {
   return (
     <Dataframe>
-      <TextField field="Title" value="title" />
+      <TextField field="Name" value="name" />
       <FunctionField
-        field="Completed"
-        value={(value) => <h1>{value?.title}</h1>}
+        field="Address"
+        value={(value) => <h1>{value?.address?.street} <br /> {value?.address?.city}</h1>}
       />
       <ActionField
         field=""

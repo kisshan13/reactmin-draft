@@ -14,8 +14,6 @@ function Router({ defaultLoader, layout }: RouterProps) {
     );
   }, [routerInfo]);
 
-  console.log(routerInfo);
-
   return (
     <BrowserRouter>
       {isBaseRouter && <BaseRouter loader={defaultLoader} />}

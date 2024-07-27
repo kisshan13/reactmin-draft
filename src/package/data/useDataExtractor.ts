@@ -17,40 +17,10 @@ export function useDataExtractor(children: ReactChildren) {
     const isArray = Array.isArray(children);
 
     if (!isArray) {
-      if (isValidComponentForExtracting(children, validComponents)) {
-        const props = (children?.valueOf() as any)["props"] as any;
-        const componentName = getComponentName(children);
-
-        if (!props && import.meta.env.DEV) {
-          throw new Error("<Dataframe> children missing props.");
-        }
-
-        return [getPropsByComponent(componentName, props)];
-      } else {
-        if (import.meta.env.DEV) {
-          throw new Error(
-            "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
-          );
-        }
-      }
+      return [getDataInfo(children)];
     } else {
       const mappedData = children.map((res) => {
-        if (isValidComponentForExtracting(res, validComponents)) {
-          const props = (res?.valueOf() as any)["props"];
-          const componentName = getComponentName(res);
-
-          if (!props && import.meta.env.DEV) {
-            throw new Error("<Dataframe> children missing props.");
-          }
-
-          return getPropsByComponent(componentName, props);
-        }
-
-        if (import.meta.env.DEV) {
-          throw new Error(
-            "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
-          );
-        }
+        return getDataInfo(res);
       });
 
       return mappedData;
@@ -58,4 +28,24 @@ export function useDataExtractor(children: ReactChildren) {
   }, [children]);
 
   return data;
+}
+
+function getDataInfo(children: React.ReactNode) {
+  if (
+    !isValidComponentForExtracting(children, validComponents) &&
+    import.meta.env.DEV
+  ) {
+    throw new Error(
+      "<Datafram> must have an valid React component as it's children. Only valid DataField components are supported."
+    );
+  }
+
+  const props = (children?.valueOf() as any)["props"] as any;
+  const componentName = getComponentName(children);
+
+  if (!props && import.meta.env.DEV) {
+    throw new Error("<Dataframe> children missing props.");
+  }
+
+  return getPropsByComponent(componentName, props);
 }

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 import { isValidComponentForExtracting } from "../utils/utils";
 
@@ -9,84 +9,52 @@ function useResourceExtractor(children: ReactChildren): ResourceType[] {
     const isArray = Array.isArray(children);
 
     if (!isArray) {
-      if (
-        isValidComponentForExtracting(children, ActiminComponents.ResourceType)
-      ) {
-        const props = (children?.valueOf() as any)["props"] as ResourceType;
-
-        if (!props && import.meta.env.DEV) {
-          throw new Error("<ResourceType> missing required props.");
-        }
-
-        const isDeleteOrUpdate =
-          props?.type === "delete" ||
-          props?.type === "update" ||
-          props?.type === "create";
-
-        const isModal = isDeleteOrUpdate
-          ? props?.isModal === false
-            ? false
-            : true
-          : false;
-
-        return [
-          {
-            role: props.role,
-            isModal: isModal,
-            component: props.component,
-            type: props.type,
-            page: props?.page,
-          },
-        ];
-      } else {
-        if (import.meta.env.DEV) {
-          throw new Error(
-            "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
-          );
-        }
-      }
+      return [getResourceInfo(children)];
     } else {
       const mappedResources = children.map((res) => {
-        if (
-          isValidComponentForExtracting(res, ActiminComponents.ResourceType)
-        ) {
-          const props = (res?.valueOf() as any)["props"] as ResourceType;
-
-          if (!props && import.meta.env.DEV) {
-            throw new Error("<ResourceType> missing required props.");
-          }
-
-          const isDeleteOrUpdate =
-            props?.type === "delete" ||
-            props?.type === "update" ||
-            props?.type === "create";
-
-          const isModal = isDeleteOrUpdate
-            ? props?.isModal === false
-              ? false
-              : true
-            : false;
-
-          return {
-            role: props.role,
-            isModal: isModal,
-            component: props.component,
-            type: props.type,
-            page: props?.page,
-          };
-        } else {
-          if (import.meta.env.DEV) {
-            throw new Error(
-              "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
-            );
-          }
-        }
+        return getResourceInfo(res);
       });
       return mappedResources;
     }
   }, [children]);
 
   return resource;
+}
+
+function getResourceInfo(children: React.ReactNode) {
+  if (
+    !isValidComponentForExtracting(children, ActiminComponents.ResourceType) &&
+    import.meta.env.DEV
+  ) {
+    throw new Error(
+      "<Resource> must have an valid React Component as it's children. Only <ResourceType> Component allowed."
+    );
+  }
+
+  const props = (children?.valueOf() as any)["props"] as ResourceType;
+
+  if (!props && import.meta.env.DEV) {
+    throw new Error("<ResourceType> missing required props");
+  }
+
+  const isDeleteOrUpdate =
+    props?.type === "delete" ||
+    props?.type === "update" ||
+    props?.type === "create";
+
+  const isModal = isDeleteOrUpdate
+    ? props?.isModal === false
+      ? false
+      : true
+    : false;
+
+  return {
+    role: props.role,
+    isModal: isModal,
+    component: props.component,
+    type: props.type,
+    page: props?.page,
+  };
 }
 
 export default useResourceExtractor;

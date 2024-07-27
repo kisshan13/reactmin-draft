@@ -6,7 +6,7 @@ import UserData from "./UserData";
 function User() {
   return (
     <Resource  name="user" path="/">
-      <ResourceType type="read" component={<UserData />} />
+      <ResourceType type="read" component={<UserData />}  />
       <ResourceType type="delete" component={<></>} />
     </Resource>
   );

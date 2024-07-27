@@ -4,7 +4,7 @@ const userApiManager = new ApiManager("user");
 
 userApiManager.registerApi({
   find: async (data) => {
-    const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+    const res = await fetch("https://jsonplaceholder.typicode.com/users");
     const d = await res.json();
 
     return {

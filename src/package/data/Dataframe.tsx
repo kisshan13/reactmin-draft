@@ -11,13 +11,11 @@ import {
   TableRow,
 } from "../ui/table";
 import {
-  useResourceEntity,
   useResourceEntityVerbose,
 } from "../resource/useResourceEntity";
 import { useApi } from "../api/useApi";
 import { useQuery } from "react-query";
 import DefaultLoader from "../components/DefaultLoader";
-import { DeleteIcon, EyeIcon, PenIcon, Trash2Icon } from "lucide-react";
 import { DataActionContext } from "./useDataAction";
 
 function Dataframe({
@@ -26,7 +24,6 @@ function Dataframe({
   children,
 }: Dataframe & { children: ReactChildren }) {
   const dataFrame = useDataExtractor(children);
-  // const entity = useResourceEntity();
   const entityVerbose = useResourceEntityVerbose();
 
   const api = useApi();
@@ -46,7 +43,11 @@ function Dataframe({
   });
 
   const fields = useMemo(() => {
-    return dataFrame.map((d) => d?.field);
+    if (dataFrame?.length) {
+      return dataFrame.map((d) => d?.field);
+    }
+
+    return [];
   }, [dataFrame]);
 
   if (isLoading) {
@@ -79,37 +80,41 @@ function Dataframe({
         </TableHeader>
         <TableBody>
           {data?.data &&
-            data?.data?.map((d, i) => (
-              <TableRow key={i}>
-                {serials && <TableCell>{i + 1}</TableCell>}
-                {dataFrame.map((frame) => {
-                  return (
-                    <>
-                      {!frame?.isFunction && (
-                        <TableCell>{d[frame?.value]}</TableCell>
-                      )}
+            data?.data?.map((d: any, i: number) => (
+              <>
+                {dataFrame?.length && (
+                  <TableRow key={i}>
+                    {serials && <TableCell>{i + 1}</TableCell>}
+                    {dataFrame.map((frame) => {
+                      return (
+                        <>
+                          {!frame?.isFunction && (
+                            <TableCell>{d[frame?.value]}</TableCell>
+                          )}
 
-                      {frame?.isFunction && (
-                        <TableCell>{frame?.value(d)}</TableCell>
-                      )}
+                          {frame?.isFunction && (
+                            <TableCell>{frame?.value(d)}</TableCell>
+                          )}
 
-                      {frame?.isActionField && (
-                        <TableCell>
-                          <DataActionContext.Provider
-                            value={{
-                              onDeleteClick,
-                              onReadClick,
-                              onUpdateClick,
-                            }}
-                          >
-                            {frame?.component(d)}
-                          </DataActionContext.Provider>
-                        </TableCell>
-                      )}
-                    </>
-                  );
-                })}
-              </TableRow>
+                          {frame?.isActionField && (
+                            <TableCell>
+                              <DataActionContext.Provider
+                                value={{
+                                  onDeleteClick,
+                                  onReadClick,
+                                  onUpdateClick,
+                                }}
+                              >
+                                {frame?.component(d)}
+                              </DataActionContext.Provider>
+                            </TableCell>
+                          )}
+                        </>
+                      );
+                    })}
+                  </TableRow>
+                )}
+              </>
             ))}
         </TableBody>
       </Table>
