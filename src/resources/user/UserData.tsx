@@ -25,7 +25,7 @@ function UserActionField({ value }: { value: any }) {
       <button>
         <TrashIcon />
       </button>
-      <button>
+      <button onClick={actions.onReadClick}>
         <EyeIcon />
       </button>
     </div>
@@ -34,11 +34,15 @@ function UserActionField({ value }: { value: any }) {
 
 function UserData() {
   return (
-    <Dataframe>
+    <Dataframe unique="id">
       <TextField field="Name" value="name" />
       <FunctionField
         field="Address"
-        value={(value) => <h1>{value?.address?.street} <br /> {value?.address?.city}</h1>}
+        value={(value) => (
+          <h1>
+            {value?.address?.street} <br /> {value?.address?.city}
+          </h1>
+        )}
       />
       <ActionField
         field=""

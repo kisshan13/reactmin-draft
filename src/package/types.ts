@@ -70,6 +70,15 @@ export interface RouterProps {
 export interface Dataframe {
   serials?: boolean;
   actions?: boolean;
+  unique: string;
+}
+
+export interface Data {
+  field?: string;
+  isFunction?: boolean;
+  value?: any;
+  isActionField?: boolean;
+  component?: FunctionSignature;
 }
 
 export interface DataTextField {

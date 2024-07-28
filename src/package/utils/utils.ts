@@ -1,6 +1,6 @@
 import React, { isValidElement } from "react";
 
-import { ActiminComponents, type Component } from "../types";
+import { ActiminComponents, Data, type Component } from "../types";
 
 export function getComponentName(component: React.ReactNode) {
   const componentValue = component?.valueOf() as Component<any>;
@@ -34,7 +34,7 @@ export function isValidComponentForExtracting(
   return true;
 }
 
-export function getPropsByComponent(component: string, props: any) {
+export function getPropsByComponent(component: string, props: any): Data {
   if (import.meta.env.DEV) {
     switch (component) {
       case ActiminComponents.TextField:

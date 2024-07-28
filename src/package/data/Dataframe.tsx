@@ -10,17 +10,17 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import {
-  useResourceEntityVerbose,
-} from "../resource/useResourceEntity";
+import { useResourceEntityVerbose } from "../resource/useResourceEntity";
 import { useApi } from "../api/useApi";
 import { useQuery } from "react-query";
 import DefaultLoader from "../components/DefaultLoader";
 import { DataActionContext } from "./useDataAction";
+import DataRow from "./DataRow";
 
 function Dataframe({
   serials = true,
   actions = true,
+  unique,
   children,
 }: Dataframe & { children: ReactChildren }) {
   const dataFrame = useDataExtractor(children);
@@ -54,9 +54,7 @@ function Dataframe({
     return <DefaultLoader />;
   }
 
-  const onReadClick = () => {
-    console.log("reading");
-  };
+  const onReadClick = () => {};
 
   const onDeleteClick = () => {
     console.log("delete");
@@ -83,36 +81,16 @@ function Dataframe({
             data?.data?.map((d: any, i: number) => (
               <>
                 {dataFrame?.length && (
-                  <TableRow key={i}>
-                    {serials && <TableCell>{i + 1}</TableCell>}
-                    {dataFrame.map((frame) => {
-                      return (
-                        <>
-                          {!frame?.isFunction && (
-                            <TableCell>{d[frame?.value]}</TableCell>
-                          )}
-
-                          {frame?.isFunction && (
-                            <TableCell>{frame?.value(d)}</TableCell>
-                          )}
-
-                          {frame?.isActionField && (
-                            <TableCell>
-                              <DataActionContext.Provider
-                                value={{
-                                  onDeleteClick,
-                                  onReadClick,
-                                  onUpdateClick,
-                                }}
-                              >
-                                {frame?.component(d)}
-                              </DataActionContext.Provider>
-                            </TableCell>
-                          )}
-                        </>
-                      );
-                    })}
-                  </TableRow>
+                  <DataRow
+                    data={d}
+                    serials={serials}
+                    sno={i}
+                    frame={dataFrame}
+                    queryKey={""}
+                    action={actions}
+                    key={i}
+                    unique={unique}
+                  />
                 )}
               </>
             ))}
