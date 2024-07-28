@@ -39,8 +39,12 @@ function DataRow({
     switch (type) {
       case "read":
         onRead();
+        return;
       case "update":
+
       case "delete":
+        onDelete();
+        return;
     }
   };
 
@@ -54,34 +58,42 @@ function DataRow({
     );
   };
 
-  return (
-    <TableRow>
-      {serials && <TableCell>{sno}</TableCell>}
-      {frame.map((df, i) => {
-        return (
-          <>
-            {!df?.isFunction && !df?.isActionField && (
-              <TableCell key={i}>{data[df?.value]}</TableCell>
-            )}
+  const onDelete = () => {
+    console.log("Delete handler");
+  };
 
-            {df?.isFunction && <TableCell key={i}>{df?.value(data)}</TableCell>}
-            {df?.isActionField && df.component && (
-              <TableCell key={i}>
-                <DataActionContext.Provider
-                  value={{
-                    onDeleteClick: () => onAction("delete"),
-                    onReadClick: () => onAction("read"),
-                    onUpdateClick: () => onAction("update"),
-                  }}
-                >
-                  {df?.component(data)}
-                </DataActionContext.Provider>
-              </TableCell>
-            )}
-          </>
-        );
-      })}
-    </TableRow>
+  return (
+    <>
+      <TableRow>
+        {serials && <TableCell>{sno}</TableCell>}
+        {frame.map((df, i) => {
+          return (
+            <>
+              {!df?.isFunction && !df?.isActionField && (
+                <TableCell key={i}>{data[df?.value]}</TableCell>
+              )}
+
+              {df?.isFunction && (
+                <TableCell key={i}>{df?.value(data)}</TableCell>
+              )}
+              {df?.isActionField && df.component && (
+                <TableCell key={i}>
+                  <DataActionContext.Provider
+                    value={{
+                      onDeleteClick: () => onAction("delete"),
+                      onReadClick: () => onAction("read"),
+                      onUpdateClick: () => onAction("update"),
+                    }}
+                  >
+                    {df?.component(data)}
+                  </DataActionContext.Provider>
+                </TableCell>
+              )}
+            </>
+          );
+        })}
+      </TableRow>
+    </>
   );
 }
 
